@@ -2,4 +2,18 @@
 
 set -e
 
+# Set up node
 npm install
+
+# Set up deploys
+if heroku join --app hound-mdast-staging &> /dev/null; then
+  git remote add staging git@heroku.com:hound-mdast-staging.git || true
+else
+  printf 'Ask for access to the "hound-mdast-staging" Heroku app\n'
+fi
+
+if heroku join --app hound-mdast-production &> /dev/null; then
+  git remote add production git@heroku.com:hound-mdast-production.git || true
+else
+  printf 'Ask for access to the "hound-mdast-production" Heroku app\n'
+fi

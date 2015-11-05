@@ -1,6 +1,9 @@
 {
   "name": "hound-mdast",
   "version": "0.0.1",
+  "engines": {
+    "node": "4.1.1"
+  },
   "description": "mdast-lint service for Hound",
   "main": "index.js",
   "scripts": {
@@ -27,7 +30,7 @@
   "dependencies": {
     "mdast": "^2.1.0",
     "mdast-lint": "^1.1.1",
-    "node-resque": "^1.0.2",
+    "node-resque": "^1.1.1",
     "redis": "^2.1.0",
     "rsvp": "^3.1.0"
   },

@@ -3,6 +3,7 @@ var RSVP = require("rsvp");
 var Linter = require("../lib/linter");
 var Queue = require("../lib/queue");
 var lastJob = require("./helpers/redis").lastJob;
+var configContentFor = require("./helpers/config").configContentFor;
 
 QUnit.module("Integration");
 
@@ -19,7 +20,7 @@ asyncTest("Linter communicates over resque", function() {
   var linter = new Linter(outbound);
   var inboundJob = {
     content: "# Hello\n",
-    config: JSON.stringify({ "heading-style": "setext" }),
+    config: configContentFor({ "heading-style": "setext" }),
     filename: "filename",
     commit_sha: "commit_sha",
     pull_request_number: "pull_request_number",

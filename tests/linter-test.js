@@ -1,9 +1,20 @@
+var RSVP = require("rsvp");
+var Redis = require("fakeredis");
+var HoundJavascript = require("hound-javascript");
 var Linter = require("../lib/linter");
+var lastJob = require("./helpers/redis").lastJob;
 var configContentFor = require("./helpers/config").configContentFor;
 
 QUnit.module("Linter");
 
-test("mdast linting", function() {
+RSVP.on("error", function(error) {
+  throw new Error(error);
+});
+
+asyncTest("mdast linting", function() {
+  var redis = Redis.createClient();
+  var houndJavascript = new HoundJavascript(redis);
+  var linter = new Linter(houndJavascript);
   var payload = {
     content: "# Hello\n",
     config: configContentFor({ "heading-style": "setext" }),
@@ -12,24 +23,62 @@ test("mdast linting", function() {
     pull_request_number: "pull_request_number",
     patch: "patch",
   };
-  var outbound = {
-    enqueue: function(job) {
-      return job;
-    }
+
+  linter.lint(payload).then(function() {
+    lastJob(redis, "high", function(job) {
+      start();
+
+      equal(
+        job.class,
+        "CompletedFileReviewJob",
+        "pushes the proper job type"
+      );
+      deepEqual(
+        job.args[0],
+        {
+          violations: [ { line: 1, message: "Headings should use setext" } ],
+          filename: "filename",
+          commit_sha: "commit_sha",
+          pull_request_number: "pull_request_number",
+          patch: "patch",
+        },
+        "pushes a job onto the queue"
+      );
+    });
+  });
+});
+
+asyncTest("Reporting an invalid configuration file", function() {
+  var payload = {
+    content: "// TODO",
+    config: "---\nyaml: is good\ntrue/false/syntax/error",
+    filename: "filename",
+    commit_sha: "commit_sha",
+    pull_request_number: "pull_request_number",
+    patch: "patch",
   };
-  var linter = new Linter(outbound);
+  var redis = Redis.createClient();
+  var houndJavascript = new HoundJavascript(redis);
+  var linter = new Linter(houndJavascript);
 
-  var job = linter.lint(payload);
-  var violation = job.violations[0];
+  linter.lint(payload).then(function() {
+    lastJob(redis, "high", function(job) {
+      start();
 
-  ok(violation.message.match(/headings/i), "includes the proper message");
-  equal(violation.line, 1, "includes the proper line");
-  equal(job.filename, payload.filename, "passes through filename");
-  equal(job.commit_sha, payload.commit_sha, "passes through commit_sha");
-  equal(
-    job.pull_request_number,
-    payload.pull_request_number,
-    "passes through pull_request_number"
-  );
-  equal(job.patch, payload.patch, "passes through patch");
+      equal(
+        job.class,
+        "ReportInvalidConfigJob",
+        "pushes the proper job type"
+      );
+      deepEqual(
+        job.args[0],
+        {
+          commit_sha: "commit_sha",
+          pull_request_number: "pull_request_number",
+          linter_name: "mdast",
+        },
+        "pushes a job onto the queue"
+      );
+    });
+  });
 });

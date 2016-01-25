@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/thoughtbot/hound-mdast#readme",
   "dependencies": {
-    "hound-javascript": "0.0.1",
+    "hound-javascript": "0.0.2",
     "mdast": "^2.1.0",
     "mdast-lint": "^1.1.1",
     "node-resque": "^1.1.1",

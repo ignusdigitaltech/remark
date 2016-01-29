@@ -1,10 +1,10 @@
 module.exports = {
   configContentFor: function(config) {
-    var fullMdastConfig = {
+    var fullRemarkConfig = {
       "plugins": {
         "lint": config
       }
     };
-    return JSON.stringify(fullMdastConfig);
+    return JSON.stringify(fullRemarkConfig);
   }
 };

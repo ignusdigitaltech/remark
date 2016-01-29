@@ -3,7 +3,7 @@ var configContentFor = require("./helpers/config").configContentFor;
 
 QUnit.module("Config");
 
-test("Parsing an MDast config file", function() {
+test("Parsing a Remark config file", function() {
   var config = new Config(
     configContentFor({ "heading-style": "setext" })
   );

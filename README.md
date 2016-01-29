@@ -1,14 +1,14 @@
-# Hound mdast
+# Hound remark
 
-[mdast] is Markdown processor powered by plugins. [mdast-lint] is an mdast
+[remark] is Markdown processor powered by plugins. [remark-lint] is an remark
 plugin for linting Markdown style.
 
-`hound-mdast` is a Node service that polls `MdastReviewJob`s from the
-`mdast_review` queue, lints code with `mdast-lint`, then pushes the results to
+`hound-remark` is a Node service that polls `RemarkReviewJob`s from the
+`remark_review` queue, lints code with `remark-lint`, then pushes the results to
 the `high` queue, as `CompletedFileReviewJob`s.
 
-[mdast]: http://mdast.js.org/
-[mdast-lint]: https://github.com/wooorm/mdast-lint
+[remark]: http://remark.js.org/
+[remark-lint]: https://github.com/wooorm/remark-lint
 
 ## Testing locally
 

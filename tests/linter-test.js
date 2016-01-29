@@ -11,7 +11,7 @@ RSVP.on("error", function(error) {
   throw new Error(error);
 });
 
-asyncTest("mdast linting", function() {
+asyncTest("remark linting", function() {
   var redis = Redis.createClient();
   var houndJavascript = new HoundJavascript(redis);
   var linter = new Linter(houndJavascript);
@@ -75,7 +75,7 @@ asyncTest("Reporting an invalid configuration file", function() {
         {
           commit_sha: "commit_sha",
           pull_request_number: "pull_request_number",
-          linter_name: "mdast",
+          linter_name: "remark",
         },
         "pushes a job onto the queue"
       );

@@ -1,10 +1,10 @@
 {
-  "name": "hound-mdast",
+  "name": "hound-remark",
   "version": "0.0.1",
   "engines": {
     "node": "4.1.1"
   },
-  "description": "mdast-lint service for Hound",
+  "description": "remark-lint service for Hound",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -29,8 +29,8 @@
   "homepage": "https://github.com/thoughtbot/hound-mdast#readme",
   "dependencies": {
     "hound-javascript": "0.0.2",
-    "mdast": "^2.1.0",
-    "mdast-lint": "^1.1.1",
+    "remark": "^3.2.2",
+    "remark-lint": "^2.2.1",
     "node-resque": "^1.1.1",
     "redis": "^2.1.0",
     "rsvp": "^3.1.0"

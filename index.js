@@ -12,9 +12,9 @@ var linter = new Linter(houndJavascript);
 var worker = new Resque.multiWorker(
   {
     connection: { redis: redis },
-    queues: ["mdast_review"],
+    queues: ["remark_review"],
   }, {
-    "MdastReviewJob": function(payload, callback) {
+    "RemarkReviewJob": function(payload, callback) {
       linter.lint(payload).finally(callback);
     }
   }
